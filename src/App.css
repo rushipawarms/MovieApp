@@ -65,8 +65,12 @@ margin-right: 5vw;
 .movies-img{
   height: 40vh;
   width: 20vw;
-  
-
+}
+.fav-table{
+padding:3rem;
+}
+.fav-generes{
+padding:3rem;
 }
 @media screen and (max-width:425px){
   .poster-card{
