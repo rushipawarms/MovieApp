@@ -68,6 +68,8 @@ margin-right: 5vw;
 }
 .fav-table{
 padding:3rem;
+overflow: auto;
+overflow-y: auto;
 }
 .fav-generes{
 padding:3rem;

@@ -8,7 +8,9 @@ export default class Favorite extends Component {
             genres:[],
             currentGenre:'All Genres',
             movies:[],
-            currentSearch:''
+            currentSearch:'',
+            limit:5,
+            currentpage:1
         }
     }
     componentDidMount()
@@ -78,6 +80,28 @@ export default class Favorite extends Component {
               movies:[...items]
           })
     }
+    handlePage=(page)=>{
+        this.setState({
+            currentpage:page
+        })
+
+    }
+    handleLimit=(value)=>{
+        this.setState({
+            limit:value
+        })
+    }
+    handleDelete=(moivie)=>{
+        let movieAfterDelete=[];
+        movieAfterDelete=this.state.movies.filter((movieobj)=>{
+            return movieobj.id!=moivie.id
+        })
+        this.setState({
+            movies:[...movieAfterDelete]
+        })
+        localStorage.setItem('movies',JSON.stringify(movieAfterDelete))
+        
+    }
     render() {
         // let movie=movies.results;
         let genreids = {28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',99:'Documentary',18:'Drama',10751:'Family',14:'Fantasy',36:'History',
@@ -122,14 +146,25 @@ export default class Favorite extends Component {
             })
         }
         }
+        console.log(filterArray.length);
+        let pages=Math.ceil(filterArray.length/this.state.limit);
+        console.log(pages);
+        let pageArray=[];
+        for(let i=1;i<=pages;i++)
+        {
+            pageArray.push(i);
+        }
+        console.log(pageArray);
+        let si=(this.state.currentpage-1)*this.state.limit;
+        let li=si+(this.state.limit);
+        filterArray=filterArray.slice(si,li);
         
-        // console.log(filterArray);
         return (
             <div>
                 <>
                     <div className="main">
                         <div className="row">
-                            <div className="col-3"> 
+                            <div className="col-lg-3 col-sm-12 "> 
                                 <ul class="list-group fav-generes">
                                     {
                                         this.state.genres.map((obj)=>{
@@ -143,10 +178,10 @@ export default class Favorite extends Component {
                                    
                                 </ul>
                             </div>
-                            <div className="col-9 fav-table"> 
+                            <div className="col-lg-9 col-sm-12 fav-table"> 
                                 <div className="row">
                                 <input type="text" className="input-group-text col" value={this.state.currentSearch} onChange={(e)=>this.handleSearch(e.target.value)} placeholder="Search" />
-                                <input type="Number" className="input-group-number col"  placeholder="Movies count on page"/>
+                                <input type="Number" className="input-group-number col" value={this.state.limit} onChange={(e)=>this.handleLimit(e.target.value)} placeholder="Movies count on page"/>
                                 </div>
                                 <div className="row">
                                 <table class="table">
@@ -169,7 +204,7 @@ export default class Favorite extends Component {
                                                     <td>{genreids[ movieObj.genre_ids[0]]}</td>
                                                     <td>{ movieObj.popularity}</td>
                                                     <td>{movieObj.vote_average}</td>
-                                                    <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                                    <td><button type="button" class="btn btn-danger" onClick={()=>this.handleDelete(movieObj)}>Delete</button></td>
                                                     </tr>
                                                 )
                                             })
@@ -179,11 +214,15 @@ export default class Favorite extends Component {
                                 </div>
                                     <nav aria-label="Page navigation example">
                                     <ul class="pagination">
-                                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                        {
+                                            pageArray.map((page)=>{
+                                                return(
+                                                    <li class="page-item"><a class="page-link" onClick={()=>this.handlePage(page)}>{page}</a></li>
+                                                )
+                                            })
+                                             
+                                        }
+                                       
                                     </ul>
                                     </nav>
                             </div>
