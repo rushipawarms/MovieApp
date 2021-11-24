@@ -20,9 +20,12 @@ export default class Movies extends Component {
     {
        let responce= await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=aba699ebc454a31d2112881a91615079&language=en-US&page=${this.state.currentPage}`)
        let data=responce.data
-       console.log(data);
+      
+       let olddata=JSON.parse(localStorage.getItem('movies') || "[]")
+       let temp=olddata.map((m)=>m.id)
        this.setState({
-           Movie:[...data.results]
+           Movie:[...data.results],
+           favorite:[...temp]
        })
     }
     changeMovie=async()=>{
@@ -63,6 +66,7 @@ export default class Movies extends Component {
     
     handleFavorite=(movie)=>{
         let olddata=JSON.parse(localStorage.getItem('movies') || "[]")
+        
         if(this.state.favorite.includes(movie.id))
         {
             olddata=olddata.filter((m)=>m.id!=movie.id)
@@ -72,6 +76,8 @@ export default class Movies extends Component {
         }
         localStorage.setItem('movies',JSON.stringify(olddata))
         let temp=olddata.map((m)=>m.id)
+        
+        console.log(temp);
      this.setState({
          favorite:[...temp]
      })

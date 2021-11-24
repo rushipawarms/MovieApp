@@ -37,10 +37,46 @@ export default class Favorite extends Component {
         })
     }
     handleSearch=(text)=>{
-        console.log(text);
+      
         this.setState({
             currentSearch:text
         })
+    }
+    popularityDes=()=>{
+        let items=[...this.state.movies];
+        items.sort(function (a, b) {
+            return b.popularity-a.popularity ;
+          });
+          this.setState({
+              movies:[...items]
+          })
+    }
+    popularityAsc=()=>{
+        let items=[...this.state.movies];
+        items.sort(function (a, b) {
+            return a.popularity-b.popularity ;
+          });
+          this.setState({
+              movies:[...items]
+          })
+    }
+    ratingDes=()=>{
+        let items=[...this.state.movies];
+        items.sort(function (a, b) {
+            return b.vote_average-a.vote_average ;
+          });
+          this.setState({
+              movies:[...items]
+          })
+    }
+    ratingAsc=()=>{
+        let items=[...this.state.movies];
+        items.sort(function (a, b) {
+            return a.vote_average-b.vote_average ;
+          });
+          this.setState({
+              movies:[...items]
+          })
     }
     render() {
         // let movie=movies.results;
@@ -119,8 +155,8 @@ export default class Favorite extends Component {
                                         
                                         <th scope="col">Title</th>
                                         <th scope="col">Genre</th>
-                                        <th scope="col">Popularity</th>
-                                         <th scope="col">Rating</th>
+                                        <th scope="col"><i class="fas fa-sort-up" onClick={this.popularityDes}></i>Popularity<i class="fas fa-sort-down" onClick={this.popularityAsc}></i></th>
+                                         <th scope="col"><i class="fas fa-sort-up" onClick={this.ratingDes} ></i>Rating<i class="fas fa-sort-down"onClick={this.ratingAsc} ></i></th>
                                           <th scope="col"></th>
                                         </tr>
                                     </thead>
