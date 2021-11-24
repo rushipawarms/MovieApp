@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
 import { movies } from './MoviesData'
 export default class Poster extends Component {
+
+      randomNumber=(min, max)=> {
+      return Math.floor(Math.random() * (1+ max - min));
+}
     render() {
-        let movie=movies.results[0];
+       
+      
+        let movie=movies.results[this.randomNumber(1,18)];
         return (
             <>
             {

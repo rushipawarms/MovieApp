@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 // import { movies } from './MoviesData'
 import axios from 'axios'
-
+let datat=[];
 export default class Movies extends Component {
+    
     constructor(){
         super();
         console.log("constructor called");
@@ -10,7 +11,9 @@ export default class Movies extends Component {
             hover:'',
             parr:[1],
             currentPage:1,
-            Movie:[]
+            Movie:[],
+            favorite:[],
+            data:[]
         }
     }
     async componentDidMount()
@@ -57,6 +60,23 @@ export default class Movies extends Component {
             },this.changeMovie)
         }
     }
+    
+    handleFavorite=(movie)=>{
+        let olddata=JSON.parse(localStorage.getItem('movies') || "[]")
+        if(this.state.favorite.includes(movie.id))
+        {
+            olddata=olddata.filter((m)=>m.id!=movie.id)
+        }
+        else{
+            olddata.push(movie);
+        }
+        localStorage.setItem('movies',JSON.stringify(olddata))
+        let temp=olddata.map((m)=>m.id)
+     this.setState({
+         favorite:[...temp]
+     })
+     
+    }
     render() {
         // let movie=movies.results;
     //    console.log("render called");
@@ -81,7 +101,7 @@ export default class Movies extends Component {
                                     <div className="buttonWrapper">
                                         {
                                             this.state.hover==obj.id &&
-                                             <a href="#" className="btn btn-primary movies-button">Add to favorite </a>
+                                             <a  className="btn btn-primary movies-button" onClick={()=>this.handleFavorite(obj)}>{this.state.favorite.includes(obj.id)? "Remove from favorite": "Add to Favorite"}</a>
                                         }
                                    
                                     </div>
