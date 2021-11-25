@@ -10,8 +10,10 @@ function App() {
   return (
    <Router>
     <Navbar/>
+    {/* <Poster/>
+    <Movies/> */}
    <Routes>
-    <Route path="/" element={<><Poster/><Movies/></>}/>
+    <Route exact path="/"  element={<><Poster/><Movies/></>}/>
     <Route path="/favorite" element={<Favorite/>}/>
    </Routes>
   </Router>
